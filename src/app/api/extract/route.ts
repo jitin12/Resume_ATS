@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-wrapper-object-types */
+
+
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
 import 'dotenv/config';

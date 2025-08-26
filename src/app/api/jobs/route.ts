@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-wrapper-object-types */
+
+
 import 'dotenv/config';
 import connectDB from '../../../../backend/connectdb';
 import { ResumeModel } from '../../../../backend/models/Schema';
@@ -5,7 +8,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from '../auth/[...nextauth]/route'; // import your authOptions
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-wrapper-object-types */
+
+
 import { NextRequest, NextResponse } from "next/server";
 import { uploadToS3 } from "../../../../backend/s3";
 import connectDB from "../../../../backend/connectdb";
