@@ -8,6 +8,7 @@ const entrySchema = new mongoose.Schema({
 
 const resumeSchema = new mongoose.Schema({
   entryId: { type: mongoose.Schema.Types.ObjectId, ref: "Entry", required: true },
+  email : { type : String , required : true},
     s3url : { type: String, required: true },
     uploadedAt: { type: Date, default: Date.now },
     keywords: { type: [String], default: [] },

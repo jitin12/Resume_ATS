@@ -1,21 +1,9 @@
-"use client";
-import upload from "../../backend/mongodb";
-import { signIn, signOut, useSession } from "next-auth/react";
+import Resume from "@/components/ui/resume"
 
-export default function NavBar() {
-  const { data: session } = useSession();
-  
+export default function Home() {
   return (
-    <nav>
-      {session ? (
-        
-        <>
-          <span>Welcome, {session.user?.name}</span>
-          <button onClick={() => signOut()}>Logout</button>
-        </>
-      ) : (
-        <button onClick={() => signIn("google")}>Login with Google</button>
-      )}
-    </nav>
+    <main className="h-screen w-screen overflow-hidden bg-black relative">
+      <Resume />
+    </main>
   );
 }

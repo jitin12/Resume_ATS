@@ -20,13 +20,12 @@ export async function POST(req: NextRequest) {
 
         const buffer = Buffer.from(await file.arrayBuffer());
         const data = await pdfParse(buffer);
-
+       
 
         const text = data.text;
 
-
         const completion = await client.chat.completions.create({
-            model: "qwen/qwen3-32b",
+            model: "llama-3.3-70b-versatile",
             messages: [
                 {
                     role: "system",
@@ -43,9 +42,8 @@ export async function POST(req: NextRequest) {
 
         const raw = completion.choices[0]?.message?.content ?? "[]";
 
-
-
         const match = raw.match(/\[([\s\S]*?)\]/);
+        console.log(match);
 
         let keywords: string[] = [];
         if (match) {

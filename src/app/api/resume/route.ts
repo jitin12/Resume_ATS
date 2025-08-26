@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { uploadToS3 } from "../../../../backend/s3";
 import connectDB from "../../../../backend/connectdb";
-import { ResumeModel } from "../../../../backend/models/Schema";
+import { EntryModel, ResumeModel } from "../../../../backend/models/Schema";
 import Groq from "groq-sdk";
 import 'dotenv/config';
 import pdfParse from "pdf-parse";
-
+import mongoose from "mongoose";
 
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -14,15 +14,34 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get("resume") as File;
-    const userid = formData.get("userid") as string;
+    const email = formData.get("email") as string;
+    console.log(email);
+    const curruser = await EntryModel.findOne({ email: email });
+
+    const userid = curruser._id;
+
     const result = await handles3upload(file, userid);
     const s3url = result.location;
-    const keywordsres = await handlekeywords(file);
-    const keywords = await keywordsres.json();
-    const keywordsarray = keywords.keywords || [];
-    const resumeres = handleresumeupload(s3url, userid ,keywordsarray);
 
-    return resumeres;
+    await connectDB();
+
+    const existing = await ResumeModel.findOne({ entryId: new mongoose.Types.ObjectId(userid) });
+
+    if (existing) {
+      if (existing.s3url == s3url) {
+        return NextResponse.json({ message: "Resume uploaded successfully" }, { status: 200 });
+      }
+      existing.s3url = s3url;
+      const keywords = await handlekeywords(file);
+      existing.keywords = keywords;
+      await existing.save();
+      return NextResponse.json({ message: "Resume uploaded successfully" }, { status: 200 });
+    } else {
+      const keywords = await handlekeywords(file);
+      const resumeres = handleresumeupload(file, s3url,email, userid, keywords);
+      return resumeres;
+    }
+
   }
   catch (e) {
     console.error("Error in POST /api/resume:", e);
@@ -53,19 +72,12 @@ async function handles3upload(file: File, userid: string) {
 }
 
 
-async function handleresumeupload(s3url: string, userid: string , keywords: string[]) {
+async function handleresumeupload(file: File, s3url: string,email:String, userid: string, keywords: string[]) {
   try {
 
-    await connectDB();
 
-    const existing = await ResumeModel.findOne({ entryId: userid });
+    await ResumeModel.create({ entryId: userid, s3url,email,keywords });
 
-    if (existing) {
-      existing.s3url = s3url;
-      await existing.save();
-    } else {
-      await ResumeModel.create({ entryId: userid, s3url , keywords });
-    }
     return NextResponse.json({ message: "Resume uploaded successfully" }, { status: 200 });
   }
   catch (e) {
@@ -75,7 +87,7 @@ async function handleresumeupload(s3url: string, userid: string , keywords: stri
 }
 
 
-export async function handlekeywords(file : File) {
+export async function handlekeywords(file: File): Promise<string[]> {
   try {
 
 
@@ -93,7 +105,7 @@ export async function handlekeywords(file : File) {
 
 
     const completion = await client.chat.completions.create({
-      model: "qwen/qwen3-32b",
+      model: "llama-3.3-70b-versatile",
       messages: [
         {
           role: "system",
@@ -123,7 +135,7 @@ export async function handlekeywords(file : File) {
       }
     }
 
-    return NextResponse.json({ keywords });
+    return keywords;
 
   } catch (err: any) {
     console.error("Error extracting keywords:", err);
