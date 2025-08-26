@@ -1,7 +1,9 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { EntryModel } from "../../../../../backend/models/Schema";
-import connectDB from "../../../../../backend/connectdb";
+import { EntryModel } from '../../../../../backend/models/Schema';
+import connectDB from '../../../../../backend/connectdb';
+import { NextRequest } from "next/server";
+
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -13,25 +15,21 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user }) {
-      try {
-        await connectDB();
-        const existing = await EntryModel.findOne({ email: user.email });
-        if (!existing) {
-          await EntryModel.create({
-            userid: user.id,
-            name: user.name,
-            email: user.email,
-          });
-        }
-        return true;
-      } catch (err) {
-        console.error(err);
-        return false;
+      await connectDB();
+      const existing = await EntryModel.findOne({ email: user.email });
+      if (!existing) {
+        await EntryModel.create({
+          userid: user.id,
+          name: user.name,
+          email: user.email,
+        });
       }
+      return true;
     },
   },
 };
 
-// App Router requires exporting GET and POST explicitly
-export const GET = (req: Request) => NextAuth(authOptions)(req);
-export const POST = (req: Request) => NextAuth(authOptions)(req);
+// Create a wrapper compatible with App Router
+const handler = (req: NextRequest) => NextAuth(authOptions)(req);
+
+export { handler as GET, handler as POST };
