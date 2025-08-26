@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-wrapper-object-types */
+/* eslint-disable @typescript-eslint/no-explicit-any*/
 
 
 import { NextRequest, NextResponse } from "next/server";

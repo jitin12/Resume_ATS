@@ -72,7 +72,7 @@ export default function Resume() {
       formData.append("resume", file);
       formData.append("email", email);
 
-      const res = await axios.post("/api/resume", formData, {
+      await axios.post("/api/resume", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -82,7 +82,6 @@ export default function Resume() {
         toast("Resume uploaded successfully!", {
           description: "We've found matching jobs for your profile.",
         })
-        // setshowjobpage(true);
         redirect("/jobs");
       });
 

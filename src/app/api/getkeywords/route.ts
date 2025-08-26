@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any*/
+
+
 import connectDB from "../../../../backend/connectdb";
 import { ResumeModel } from "../../../../backend/models/Schema";
 import { NextResponse } from "next/server";

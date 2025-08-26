@@ -29,65 +29,7 @@ const extractedSkills = [
   { name: "AWS", category: "Cloud", icon: Globe },
 ]
 
-// Mock data for job recommendations
-const jobRecommendations = [
-  {
-    id: 1,
-    title: "Senior Frontend Developer",
-    company: "TechCorp Inc.",
-    location: "San Francisco, CA",
-    salary: "$120,000 - $160,000",
-    type: "Full-time",
-    posted: "2 days ago",
-    matchScore: 95,
-    logo: "/abstract-tech-logo.png",
-    requirements: ["React", "TypeScript", "JavaScript", "Node.js"],
-    description: "Join our dynamic team to build cutting-edge web applications using modern technologies.",
-    benefits: ["Health Insurance", "Remote Work", "401k Match"],
-  },
-  {
-    id: 2,
-    title: "Full Stack Engineer",
-    company: "StartupXYZ",
-    location: "New York, NY",
-    salary: "$100,000 - $140,000",
-    type: "Full-time",
-    posted: "1 week ago",
-    matchScore: 88,
-    logo: "/abstract-startup-logo.png",
-    requirements: ["JavaScript", "Python", "React", "SQL"],
-    description: "Build scalable applications from frontend to backend in a fast-paced startup environment.",
-    benefits: ["Equity", "Flexible Hours", "Learning Budget"],
-  },
-  {
-    id: 3,
-    title: "UI/UX Developer",
-    company: "Design Studio Pro",
-    location: "Austin, TX",
-    salary: "$90,000 - $120,000",
-    type: "Full-time",
-    posted: "3 days ago",
-    matchScore: 82,
-    logo: "/design-studio-logo.png",
-    requirements: ["UI/UX Design", "JavaScript", "React"],
-    description: "Create beautiful and intuitive user experiences for our diverse client portfolio.",
-    benefits: ["Creative Freedom", "Health Insurance", "PTO"],
-  },
-  {
-    id: 4,
-    title: "Cloud Solutions Developer",
-    company: "CloudTech Solutions",
-    location: "Seattle, WA",
-    salary: "$110,000 - $150,000",
-    type: "Full-time",
-    posted: "5 days ago",
-    matchScore: 78,
-    logo: "/cloud-tech-logo.png",
-    requirements: ["AWS", "Python", "JavaScript", "SQL"],
-    description: "Develop and maintain cloud-based solutions for enterprise clients.",
-    benefits: ["Remote Work", "Training Budget", "Stock Options"],
-  },
-]
+
 
 interface Job {
   id: string;
@@ -108,11 +50,9 @@ interface Job {
 export default function SkillsJobDashboard() {
 
 const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(false);
 
    useEffect(() => {
     const fetchJobs = async () => {
-      setLoading(true);
       try {
         const res = await fetch("/api/jobs"); // your API route
         console.log(res);
@@ -121,7 +61,6 @@ const [jobs, setJobs] = useState<Job[]>([]);
       } catch (err) {
         console.error("Error fetching jobs:", err);
       } finally {
-        setLoading(false);
       }
     };
 
