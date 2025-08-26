@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     } else {
       const keywords = await handlekeywords(file);
       const resumeres = handleresumeupload(file, s3url,email, userid, keywords);
-      return resumeres;
+      return NextResponse.json({ message: "Resume uploaded successfully" }, { status: 200 });
     }
 
   }
