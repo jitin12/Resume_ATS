@@ -1,11 +1,9 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { EntryModel } from "../../../../../backend/models/Schema";
-import connectDB from "../../../../../backend/connectdb";
-import { NextRequest } from "next/server";
+import { EntryModel } from '../../../../../backend/models/Schema';
+import connectDB from '../../../../../backend/connectdb';
 
-// Internal options (do NOT export)
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -14,8 +12,9 @@ const authOptions: NextAuthOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn({ user }) {
+    async signIn({ user }: { user: User }) {  // ✅ type added
       await connectDB();
+
       const existing = await EntryModel.findOne({ email: user.email });
       if (!existing) {
         await EntryModel.create({
@@ -29,8 +28,6 @@ const authOptions: NextAuthOptions = {
   },
 };
 
-// App Router-compatible wrapper
-const handler = (req: NextRequest) => NextAuth(authOptions)(req);
+const handler = NextAuth(authOptions);
 
-// ONLY export GET and POST
 export { handler as GET, handler as POST };

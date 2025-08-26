@@ -16,6 +16,7 @@ const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
+    await connectDB();
     const file = formData.get("resume") as File;
     const email = formData.get("email") as string;
     console.log(email);
@@ -26,7 +27,6 @@ export async function POST(req: NextRequest) {
     const result = await handles3upload(file, userid);
     const s3url = result.location;
 
-    await connectDB();
 
     const existing = await ResumeModel.findOne({ entryId: new mongoose.Types.ObjectId(userid) });
 
