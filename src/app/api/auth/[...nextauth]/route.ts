@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any*/
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+
+
 import NextAuth, { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { EntryModel } from "../../../../../backend/models/Schema";
