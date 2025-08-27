@@ -84,7 +84,7 @@ export default function SkillsJobDashboard() {
     }, [page, allJobs]);
 
 
-    const totalPages = Math.ceil(allJobs.length / pageSize);
+    const totalPages = Math.ceil(allJobs.length / pageSize) || 0;
 
     const handleNext = () => {
         if (page < totalPages) setPage(page + 1);

@@ -5,7 +5,6 @@ import NextAuth, { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import connectDB from "../../backend/connectdb";
 import { EntryModel } from "../../backend/models/Schema";
-
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -16,26 +15,17 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user }: { user: User }) {
-      try {
-        await connectDB();
+      await connectDB();
 
-        const existing = await EntryModel.findOne({ email: user.email });
-        if (!existing) {
-          await EntryModel.create({
-            userid: user.id,
-            name: user.name,
-            email: user.email,
-          });
-        }
-        return true;
-      } catch (error) {
-        console.error("Error in signIn callback:", error);
-        return false;
+      const existing = await EntryModel.findOne({ email: user.email });
+      if (!existing) {
+        await EntryModel.create({
+          userid: user.id,
+          name: user.name,
+          email: user.email,
+        });
       }
-    },
-    async session({ session, user }) {
-      // Optional: add custom fields to session
-      return session;
+      return true;
     },
   },
 };

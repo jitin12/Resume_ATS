@@ -103,7 +103,7 @@ export default function Resume() {
       <nav className="bg-gray-900/20 w-full backdrop-blur-md border-b border-gray-800/30 px-6 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-8">
-            <h2 className="text-xl font-bold text-white">Parsley.io</h2>
+            <h2 className="text-xl font-bold text-white ">Parsley.io</h2>
 
           </div>
 
@@ -143,8 +143,8 @@ export default function Resume() {
 
       
 
-        <div className="text-center py-4">
-          <h1 className="font-serif text-3xl md:text-6xl lg:text-8xl text-white font-bold">
+        <div className="text-center py-3">
+          <h1 className="font-serif text-3xl md:text-6xl lg:text-8xl text-white font-bold [text-shadow:0_0_4px_white] lg:mb-4 mb-2">
             Parsley.io
           </h1>
           <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-6">
@@ -155,7 +155,7 @@ export default function Resume() {
               onClick={() => setShowSignUpModal(true)}
 
               size="lg"
-              className="bg-slate-100  text-black text-md rounded-4xl font-semibold  hover:scale-105 transition-all duration-200"
+              className="bg-slate-100 shadow-[0_0_5px_white] text-black text-md rounded-4xl font-semibold  hover:scale-105 transition-all duration-200"
             >
               Get Started
             </Button>

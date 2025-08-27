@@ -8,8 +8,7 @@ import { EntryModel } from "../../../../../backend/models/Schema";
 import connectDB from "../../../../../backend/connectdb";
 import { NextRequest, NextResponse } from "next/server";
 
-// Auth options
-export const authOptions: NextAuthOptions = {
+ const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -34,9 +33,7 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-// App Router wrapper
-const handler = async (req: NextRequest) => {
-  return await NextAuth(authOptions)(req, {} as any); // App Router fix
-};
+const handler = NextAuth(authOptions);
 
+// Export for App Router
 export { handler as GET, handler as POST };
