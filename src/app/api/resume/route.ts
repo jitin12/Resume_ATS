@@ -90,7 +90,7 @@ async function handleresumeupload(file: File, s3url: string,email:String, userid
 }
 
 
-export async function handlekeywords(file: File): Promise<string[]> {
+ async function handlekeywords(file: File): Promise<string[]> {
   try {
 
 
