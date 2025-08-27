@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import { Toaster } from "sonner"
+import { Analytics } from "@vercel/analytics/next"
 
 const raleway = Raleway({
   subsets: ["latin"], // required
@@ -37,6 +38,7 @@ export default function RootLayout({
         className={`${geistSans.variable ,raleway.className} ${geistMono.variable} antialiased`}
       >
         <Providers>
+        <Analytics />
         {children}
         <Toaster richColors />
         </Providers>
