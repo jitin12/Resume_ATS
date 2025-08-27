@@ -229,7 +229,7 @@ export default function SkillsJobDashboard() {
                                                             <div className="flex items-center gap-1 bg-white/95 text-black px-2 py-1 rounded-2xl flex-shrink-0">
                                                                 <Star className="h-3 w-3 text-accent fill-current" />
                                                                 <span className="text-xs font-medium text-accent">
-                                                                    {job.matchscore}%
+                                                                    {job.matchscore}
                                                                 </span>
                                                             </div>
                                                         </div>
